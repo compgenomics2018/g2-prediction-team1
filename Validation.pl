@@ -1,24 +1,28 @@
 #!/usr/bin/perl -w
 use strict;
-
-#for now, run file as perl Validation.pl Prodigal_file GeneMarkHMM_file Glimmer_file
+use Getopt::Std;	#using getopts to take in single character switches
 
 my ($filenames, $file1, $file2, $file3, @prod, @hmm, @glim, $line1, $line2, $line3, $start1, $start2, $start3, $stop1, $stop2, $stop3);
-my (@line1_split, @line2_split, @line3_split, %prod_genes, %hmm_genes, %glim_genes);
+my (@line1_split, @line2_split, @line3_split, %prod_genes, %hmm_genes, %glim_genes, %opts, $outputfile);
 my $val;
 my $gene_num = 0;
-($filenames) = @ARGV;	#@ARGV is the input from the command line
-chomp $filenames;	#cuts the newline character from the input
-$file1 = $ARGV[0];	#Prodigal file
-$file2 = $ARGV[1];	#GeneMarkHMM file
-$file3 = $ARGV[2];	#Glimmer file
 
-open(FILE, $file1);	#opening the files..
-@prod = <FILE>;
-open(FILE, $file2);
-@hmm = <FILE>;
-open(FILE, $file3);
-@glim = <FILE>;
+getopts('p:h:g:o:', \%opts);	#the values in the string are the single character options, and the values are stored in %opts
+#p = prodigal .gff file
+#h = genemarkhmm .gff file
+#g = glimmer .gff file
+#o = output file name
+
+open(FILE1, $opts{p});	#opening prodigal file
+@prod = <FILE1>;
+
+open(FILE2, $opts{h});	#opening genemark file
+@hmm = <FILE2>;
+
+open(FILE3, $opts{g});	#opening glimmer file
+@glim = <FILE3>;
+
+open($outputfile, '>', $opts{o});	#this opens the output file we print to 
 
 #for prodigal (gff 3): 
 	#for lines starting with Contig... column 4 (start), column 5 (stop), column 7 (strand)
@@ -29,8 +33,8 @@ open(FILE, $file3);
 #for Glimmer:
 	#for all lines... column 5 (start), column 4 (stop), column 7 (strand)
 
-#We want to count the number of exact matches (same start and stop position) as well as the number of end matches (same stop position)
 
+#We want to count the number of exact matches (same start and stop position) as well as the number of end matches (same stop position)
 
 foreach $line1(@prod){	#going through the lines of the Prodigal file
 	chomp $line1;	#removing newline character from each line
@@ -72,3 +76,10 @@ foreach $line3(@glim){	#going through the lines of the Prodigal file
 	$glim_genes{$gene_num}{"start"} = $start3;	#this stores the start value for the 1st gene (and then so on..) found by Prodigal
 	$glim_genes{$gene_num}{"stop"} = $stop3;	#same with stop position
 }
+
+#next we will need to calculate the number of exact matches and the number of end matches, then print the results to our output file
+
+close($opts{p});
+close($opts{h});
+close($opts{g});
+close($opts{o});
