@@ -2,10 +2,40 @@
 use strict;
 use Getopt::Std;	#using getopts to take in single character switches
 
-my ($filenames, $file1, $file2, $file3, @prod, @hmm, @glim, $line1, $line2, $line3, $start1, $start2, $start3, $stop1, $stop2, $stop3);
-my (@line1_split, @line2_split, @line3_split, %prod_genes, %hmm_genes, %glim_genes, %opts, $outputfile);
-my $val;
-my $gene_num = 0;
+
+my %opts; #getopts options
+
+#my ($filenames, $file1, $file2, $file3, @prod, @hmm, @glim, $line1, $line2, $line3, $start1, $start2, $start3, $stop1, $stop2, $stop3);
+#my (@line1_split, @line2_split, @line3_split, %prod_genes, %hmm_genes, %glim_genes, %opts, $outputfile);
+#my $val;
+#my $gene_num = 0;
+
+sub usage {
+  print "\nHow to run this code:\n";
+  print "./validation.pl -p [prodigal gff file] -m [genemark HMM gff file] -g [glimmer gff file] -o [output file name]\n";
+  print "The three input files should be the output from the gene prediction tools\n";
+	print "All files are mandatory\n";
+  print "Use -h to get this message\n\n";
+}
+
+sub initialize{
+	getopts('p:m:g:o:h', \%opts);
+
+  #check to see if the help message was activated
+  if ($opts{h}) { usage(); exit 1;}
+  #check for the input files
+  unless (defined $opts{p} && defined $opts{m} && defined $opts{g}) { print "You need to enter the input files\n";
+    usage(); exit 1; }
+	unless (defined $opts{o}) { $opts{o} = "output.gff";}
+}
+
+initialize();
+for my $keys (keys %opts) {
+	print $keys, "\t", $opts{$keys}, "\n";
+}
+
+=put
+
 
 getopts('p:h:g:o:', \%opts);	#the values in the string are the single character options, and the values are stored in %opts
 #p = prodigal .gff file
@@ -22,17 +52,18 @@ open(FILE2, $opts{h});	#opening genemark file
 open(FILE3, $opts{g});	#opening glimmer file
 @glim = <FILE3>;
 
-open($outputfile, '>', $opts{o});	#this opens the output file we print to 
+open($outputfile, '>', $opts{o});	#this opens the output file we print to
 
-#for prodigal (gff 3): 
+#for prodigal (gff 3):
+	#actually lines starting with the contig name
 	#for lines starting with Contig... column 4 (start), column 5 (stop), column 7 (strand)
 
 #for HMM (gff 2):
+	#actually for lines starting with the contig name
 	#for lines starting with NZ_... column 4 (start), column 5 (stop),  column 7 (strand)
 
 #for Glimmer:
 	#for all lines... column 5 (start), column 4 (stop), column 7 (strand)
-
 
 #We want to count the number of exact matches (same start and stop position) as well as the number of end matches (same stop position)
 
@@ -83,3 +114,7 @@ close($opts{p});
 close($opts{h});
 close($opts{g});
 close($opts{o});
+
+
+#DONE!!!: opening the files and getting the start and stop positions
+#To do: calculate exact matches (look)
