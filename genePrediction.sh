@@ -42,6 +42,11 @@ DIR=$(pwd); #this captures the main working directory as the variable DIR
 #run Prodigal
 prodigal -i $iopt -f gff -o "$oopt/prodigal_output.gff" -d "$oopt/prodigal_nucleotide.fa" -a "$oopt/prodigal_protein.fa" 
 
+#run GeneMarkS
+cd /projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/
+perl gmsn.pl --prok --output "$DIR/$oopt/genemarkS_output.gff" --format GFF "$DIR/$iopt"
+cd ..
+
 #run GeneMarkHMM
 #perl "/projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/gmhmmp.pl" --output genemark_output.GFF --format GFF $iopt  #not working yet
 
@@ -62,4 +67,11 @@ mv *fsa* $oopt
 
 #validate outputs
     #to do this, just run validation.sh and have the prodigal output and genemark output in the same directory as well
+cd $oopt
+bash "/projects/data/team1_GenePrediction/validation/validation.sh"
+
+#we need to add the gff to fasta file (but we need to keep both the .gff and the .fa files)
+#here we need to delete the extra files (prodigal files, genemark files, and any temporary files that we don't need)
+#the only output should be the merged file from the validation script and the ncRNA output files
+
 exit;
