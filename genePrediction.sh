@@ -3,7 +3,7 @@
 #this is the usage message that displays when no input is passed or when -h is passed
 usage="Gene Prediction Pipeline. Command line options:	
 -i Input assembly file
--o Output file 
+-o Output directory 
 -h usage information "
 
 if [ $# == 0 ] ; then	#if nothing is input, then usage message is printed and the script exits
@@ -27,13 +27,15 @@ else
 	echo "$iopt: no such file exists"; exit;
 fi
 
-if [ -d outputs ]
+if [ -d $oopt ]
 then
     :
 else
-    mkdir outputs
+    mkdir $oopt
+fi
 
-cd outputs
+cd ..; #going back to the main directory
+
 if [ -e $oopt ]	#this checks if the output file already exists
 then
 	echo "$oopt already exists. would you like to overwrite the file or exit the program? (type overwrite or exit) "
@@ -49,16 +51,18 @@ fi
 #we will assume that a person running this script will be in their home directory on the server and have the assembly file(s) in that same directory
 
 #run Prodigal
-Prodigal -i "$iopt" -f gff -o prodigal_output.gff -d prodigal_nucleotide.fa -a prodigal_protein.fa 
+#Prodigal -i "$iopt" -f gff -o prodigal_output.gff -d prodigal_nucleotide.fa -a prodigal_protein.fa 
 
 #run GeneMarkHMM
-perl gmhmmp.pl --output genemark_output.GFF --format GFF "$iopt"
+perl gmhmmp.pl --output genemark_output.GFF --format GFF "$iopt"    #WE NEED TO ADD THE PATH TO the .pl script
 
 #run Aragorn
-./aragorn -t "$iopt" -o outputs/aragorn_output #must make this a directory first
+#for running aragorn, the aragorn script itself must be in the same directory as this script
+#maybe we can change the directory so that we are in the same directory as the Aragorn script, then we can send the output to this directory
+#./aragorn -t "$iopt" -o outputs/aragorn_output
 
 #run Infernal
 #run RNAmmer
 #validate outputs
-
-
+    #to do this, just run validation.sh and have the prodigal output and genemark output in the same directory as well
+exit;
