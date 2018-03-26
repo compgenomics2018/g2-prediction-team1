@@ -55,6 +55,11 @@ cd ..
 bash run_internal.sh $iopt $oopt 
 
 #run RNAmmer
+echo $iopt > file_list_RNAmmer
+perl run_rnammer.pl -i file_list_RNAmmer -d `dirname $iopt`
+rm file_list_RNAmmer
+mv *fsa* $oopt
+
 #validate outputs
     #to do this, just run validation.sh and have the prodigal output and genemark output in the same directory as well
 exit;
