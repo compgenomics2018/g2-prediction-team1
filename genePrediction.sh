@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH=/projects/data/team1_GenePrediction/bin/Prodigal/:/projects/data/team1_GenePrediction/bin/Prodigal/rnammer1.2:$PATH
 
 #this is the usage message that displays when no input is passed or when -h is passed
 usage="Gene Prediction Pipeline. Command line options:	
@@ -62,6 +63,8 @@ perl gmhmmp.pl --output genemark_output.GFF --format GFF "$iopt"    #WE NEED TO 
 #./aragorn -t "$iopt" -o outputs/aragorn_output
 
 #run Infernal
+bash run_internal.sh $iopt $oopt 
+
 #run RNAmmer
 #validate outputs
     #to do this, just run validation.sh and have the prodigal output and genemark output in the same directory as well
