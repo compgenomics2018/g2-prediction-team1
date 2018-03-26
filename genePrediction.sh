@@ -43,7 +43,7 @@ DIR=$(pwd); #this captures the main working directory as the variable DIR
 
 #run GeneMarkS
 cd /projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/
-perl gmsn.pl --prok --output /projects/home/csmith366/outputs/genemarkS_output.gff --format GFF /projects/home/csmith366/SRR3982229.sspace.final.scaffolds.fasta
+perl gmsn.pl --prok --output "$DIR/$oopt/genemarkS_output.gff" --format GFF "$DIR/$iopt"
 cd ..
 
 #run Aragorn
@@ -61,6 +61,7 @@ cd ..
 cd $oopt
 bash "/projects/data/team1_GenePrediction/validation/validation.sh"
 
+#we need to add the gff to fasta file (but we need to keep both the .gff and the .fa files)
 #here we need to delete the extra files (prodigal files, genemark files, and any temporary files that we don't need)
 #the only output should be the merged file from the validation script and the ncRNA output files
 
