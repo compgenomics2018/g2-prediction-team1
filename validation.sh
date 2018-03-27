@@ -1,8 +1,17 @@
 #!/usr/bin/bash
 
-ls *Prodigal*.gff > prodigal_list.txt
-ls *HMM*.gff > hmm_list.txt
-##ls *glimmer*.gff > glimmer_list.txt
+ls *Prodigal* > prodigal_list.txt
+ls *HMM* > hmm_list.txt
+ls *glimmer* > glimmer_list.txt
+sorting () {
+	while read line   ##read the file name list by line
+	do 
+	bedtools sort -i $line > "sorted_$line" ##sort the file in order to find interseaction faster
+	done < $1
+}
+
+sorting prodigal_list.txt
+sorting hmm_list.txt
 
 intersect () {
 	i=0
@@ -22,10 +31,9 @@ intersect () {
 	done
 }
 
-
 intersect "prodigal_list.txt" "hmm_list.txt"
-##intersect "prodigal_list.txt" "glimmer_list.txt"
-##intersect "glimmer_list.txt" "hmm_list.txt"
+intersect "prodigal_list.txt" "hmm_list.txt"
+intersect "glimmer_list.txt" "hmm_list.txt"
 
 combine_result () {            ##combining the result from the three comparisons above
 	i=0
@@ -44,12 +52,13 @@ combine_result () {            ##combining the result from the three comparisons
 	
 	for ((j=0;j<=$(($i-1));j+=1))
 	do
-	cat "overlap_${array1[$j]}_${array2[$j]}" >> "intersect_${array3[$j]}.gff"	
+	cat "overlap_${array1[$j]}_${array2[$j]}" >> "combined_${array3[$j]}.gff"
+	bedtools intersect -f 0.99 -r -a ${array1[$j]} -b ${array2[$j]}> "overlap_${array1[$j]}_${array2[$j]}"   	
 	done
 }
-##combine_result "prodigal_list.txt" "glimmer_list.txt" "genome.txt"
-##combine_result "prodigal_list.txt" "hmm_list.txt" "genome.txt"
-##combine_result "glimmer_list.txt" "hmm_list.txt" "genome.txt"
+combine_result "prodigal_list.txt" "glimmer_list.txt" "genome.txt"
+combine_result "prodigal_list.txt" "hmm_list.txt" "genome.txt"
+combine_result "glimmer_list.txt" "hmm_list.txt" "genome.txt"
 
 merge_result () {                ##merging the result, get rid of duplicate
 	while read line 
@@ -58,8 +67,7 @@ merge_result () {                ##merging the result, get rid of duplicate
 	done < $1 
 }
 
-
-##merge_result genome.txt
+merge_result genome.txt
 rm overlap*
 
 coverage () {  ##calculate the coverage of each tool in order to find the best tool
@@ -76,33 +84,21 @@ coverage () {  ##calculate the coverage of each tool in order to find the best t
 	
 	for ((j=0;j<=$(($i-1));j+=1))
 	do
+	counting=0
 	bedtools intersect -f 0.99 -r -a ${array1[$j]} -b ${array2[$j]} > "overlap_${array1[$j]}_${array2[$j]}"
 	matching=$(cat "overlap_${array1[$j]}_${array2[$j]}" | wc -l) ##count for the number of matching gene between the result of a tool and the merged result
-	total_gene=$(cat ${array2[$j]} | wc -l) ##count the number of total genes after merging
-	coverage=$(echo $(((matching * 100) / total_gene)) | bc) ##calculate the coverage for one genome
-	##echo "$3 coverage: $coverage"
-	echo -e "${array2[$j]}\t\t\t$matching\t\t\t$total_gene" >> "$3_stareport.txt"
-	##echo "${array2[$j]} total_gene: $total_gene" 
-	echo $coverage >> "$3_report.txt"
+	total_gene=$(cat ${array2[$j]} | wc -l) ##count the number of total genes predicted by a tool
+	coverage=$(echo $((matching / total_gene)) | bc) ##calculate the coverage for one genome
+	let "counting++" ##keep tract of the number of genome
+	let "total_coverage += coverage" ##add up the coverage for all genome
+	ave=$(echo $((total_coverage / counting)) | bc) ##find the average coverage for a tool
+	echo "coverage for ${array3[$j]}: $ave" >> report.txt
 	done
 }
-ls intersect*.gff > intersect_list.txt
-coverage "intersect_list.txt" "prodigal_list.txt" "prodigal"
-##coverage "intersect_list.txt" "glimmer_list.txt" "glimmer"
-coverage "intersect_list.txt" "hmm_list.txt" "gmhmm"
-
-average (){
-	while read line 
-	do 
-	counting=0
-	total_coverage=0
-	let "counting++" ##keep tract of the number of genome
-	let "total_coverage += $line" ##add up the coverage for all genome
-	ave=$(echo $((total_coverage / counting)) | bc) ##find the average coverage for a tool
-	done < $1 
-	echo "coverage for $2: $ave%" >> report.txt
-}
-average "prodigal_report.txt" "prodigal"
-average "gmhmm_report.txt" "gmhmm"
+ls merged*.gff > merged_list.txt
+coverage "merged_list.txt" "prodigal_list.txt" "prodigal"
+coverage "merged_list.txt" "glimmer_list.txt" "glimmer"
+coverage "merged_list.txt" "hmm_list.txt" "gmhmm"
 rm overlap*  ##remove processing file
+rm sorted*   ##remove processing file
 rm combined*  ##remove processing file
