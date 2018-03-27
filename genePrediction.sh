@@ -1,5 +1,5 @@
 #!/bin/bash
-export PATH=/projects/data/team1_GenePrediction/bin/Prodigal/:/projects/data/team1_GenePrediction/bin/Prodigal/rnammer1.2:$PATH
+export PATH=/projects/data/team1_GenePrediction/bin/Prodigal/:/projects/data/team1_GenePrediction/bin/rnammer1.2:/projects/data/team1_GenePrediction/bin/infernal-1.1.2/src/:$PATH
 
 #this is the usage message that displays when no input is passed or when -h is passed
 usage="Gene Prediction Pipeline. Command line options:	
@@ -36,6 +36,7 @@ else
 fi
 
 DIR=$(pwd); #this captures the main working directory as the variable DIR
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cp .gm_key ~/
 
 #we will assume that a person running this script will be in their home directory on the server and have the assembly file(s) in that same directory
@@ -58,11 +59,12 @@ cd /projects/data/team1_GenePrediction/bin/aragorn1.2.38/ #we change into the di
 cd ..
 
 #run Infernal
-bash $DIR/run_internal.sh $iopt $oopt 
+cmscan --tblout "$oopt/`basename $iopt`.RF01400.cm.tblout" --fmt 2 "/projects/data/team1_GenePrediction/bin/infernal-1.1.2/cm/RF01400.cm" $iopt > trash.cmscan
+`rm trash.cmscan`
 
 #run RNAmmer
 echo $iopt > file_list_RNAmmer
-perl $DIR/run_rnammer.pl -i file_list_RNAmmer -d `dirname $iopt`
+perl $SCRIPT_DIR/run_rnammer.pl -i file_list_RNAmmer -d `dirname $iopt`
 rm file_list_RNAmmer
 mv *fsa* $oopt
 
