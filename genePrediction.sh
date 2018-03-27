@@ -58,11 +58,11 @@ cd /projects/data/team1_GenePrediction/bin/aragorn1.2.38/ #we change into the di
 cd ..
 
 #run Infernal
-bash run_internal.sh $iopt $oopt 
+bash $DIR/run_internal.sh $iopt $oopt 
 
 #run RNAmmer
 echo $iopt > file_list_RNAmmer
-perl run_rnammer.pl -i file_list_RNAmmer -d `dirname $iopt`
+perl $DIR/run_rnammer.pl -i file_list_RNAmmer -d `dirname $iopt`
 rm file_list_RNAmmer
 mv *fsa* $oopt
 
