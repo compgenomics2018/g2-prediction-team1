@@ -38,6 +38,7 @@ else
 fi
 
 DIR=$(pwd); #this captures the main working directory as the variable DIR
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 #run Prodigal
 prodigal -i $iopt -f gff -o "$oopt/prodigal_output.gff"
@@ -53,13 +54,14 @@ cd /projects/data/team1_GenePrediction/bin/aragorn1.2.38/ #we change into the di
 cd $DIR
 
 #run Infernal
-#bash run_infernal.sh $iopt $oopt 
+cmscan --tblout "$oopt/`basename $iopt`.RF01400.cm.tblout" --fmt 2 "/projects/data/team1_GenePrediction/bin/infernal-1.1.2/cm/RF01400.cm" $iopt > trash.cmscan
+`rm trash.cmscan`
 
 #run RNAmmer
-#echo $iopt > file_list_RNAmmer
-#perl run_rnammer.pl -i file_list_RNAmmer -d `dirname $iopt`
-#rm file_list_RNAmmer
-#mv *fsa* $oopt
+echo $iopt > file_list_RNAmmer
+perl $SCRIPT_DIR/run_rnammer.pl -i file_list_RNAmmer -d `dirname $iopt`
+rm file_list_RNAmmer
+mv *fsa* $oopt
 
 #validate outputs
 #to do this, just run validation.sh and have the prodigal output and genemark output in the same directory as well
