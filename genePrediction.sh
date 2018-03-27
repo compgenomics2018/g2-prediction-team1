@@ -50,6 +50,8 @@ cd ..
 
 #run GeneMarkHMM
 #perl "/projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/gmhmmp.pl" --output genemark_output.GFF --format GFF $iopt  #not working yet
+export PATH=$PATH:/projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/
+gmhmmp -o "$oopt/genemarkHMM_output.gff" -f G -m /projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/GeneMark_hmm.mod $iopt # working
 
 #run Aragorn
 #for running aragorn, the aragorn script itself must be in the same directory as this script
@@ -69,7 +71,7 @@ mv *fsa* $oopt
 #validate outputs
     #to do this, just run validation.sh and have the prodigal output and genemark output in the same directory as well
 cd $oopt
-bash "/projects/data/team1_GenePrediction/validation/validation.sh"
+bash "/projects/data/team1_GenePrediction/ab_initio_output/validation.sh"
 
 #we need to add the gff to fasta file (but we need to keep both the .gff and the .fa files)
 #here we need to delete the extra files (prodigal files, genemark files, and any temporary files that we don't need)
