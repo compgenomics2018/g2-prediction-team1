@@ -22,8 +22,13 @@ Command:
 ./run_rnammer_new.pl -i <test_file_list> -d <input_directory>
 
 ## wrapper.sh usage
-before using:
-Assuming all the support files are in the same directory with wrapper.sh
+Add these to .bashrc before running the script:
+export PATH=$PATH:/projects/data/team1_GenePrediction/bin/Prodigal
+export PATH=$PATH:/projects/data/team1_GenePrediction/bin/bedtools2-master/bin
+Go here and select GeneMarkS and linux64, and download the gm_key_64: http://opal.biology.gatech.edu/GeneMark/license_download.cgi
+copy this "key" to your home directory: 
+$gunzip gm_key_64.gz
+$cp gm_key_64 ~/.gm_key
 
 command:
 ./genePrediction.sh -i <input_file> -o <output_file> -h <help>
