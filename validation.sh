@@ -1,8 +1,8 @@
 #!/usr/bin/bash
 
-ls *Prodigal* > prodigal_list.txt
-ls *HMM* > hmm_list.txt
-##ls *glimmer* > glimmer_list.txt
+ls *Prodigal*.gff > prodigal_list.txt
+ls *HMM*.gff > hmm_list.txt
+##ls *glimmer*.gff > glimmer_list.txt
 
 intersect () {
 	i=0
@@ -44,11 +44,11 @@ combine_result () {            ##combining the result from the three comparisons
 	
 	for ((j=0;j<=$(($i-1));j+=1))
 	do
-	cat "overlap_${array1[$j]}_${array2[$j]}" >> "combined_${array3[$j]}.gff"	
+	cat "overlap_${array1[$j]}_${array2[$j]}" >> "intersect_${array3[$j]}.gff"	
 	done
 }
 ##combine_result "prodigal_list.txt" "glimmer_list.txt" "genome.txt"
-combine_result "prodigal_list.txt" "hmm_list.txt" "genome.txt"
+##combine_result "prodigal_list.txt" "hmm_list.txt" "genome.txt"
 ##combine_result "glimmer_list.txt" "hmm_list.txt" "genome.txt"
 
 merge_result () {                ##merging the result, get rid of duplicate
@@ -58,7 +58,8 @@ merge_result () {                ##merging the result, get rid of duplicate
 	done < $1 
 }
 
-merge_result genome.txt
+
+##merge_result genome.txt
 rm overlap*
 
 coverage () {  ##calculate the coverage of each tool in order to find the best tool
@@ -80,15 +81,15 @@ coverage () {  ##calculate the coverage of each tool in order to find the best t
 	total_gene=$(cat ${array2[$j]} | wc -l) ##count the number of total genes after merging
 	coverage=$(echo $(((matching * 100) / total_gene)) | bc) ##calculate the coverage for one genome
 	##echo "$3 coverage: $coverage"
-	##echo "$3 matching: $matching"
-	##echo "$3 total_gene: $total_gene"
+	echo -e "${array2[$j]}\t\t\t$matching\t\t\t$total_gene" >> "$3_stareport.txt"
+	##echo "${array2[$j]} total_gene: $total_gene" 
 	echo $coverage >> "$3_report.txt"
 	done
 }
-ls merged*.gff > merged_list.txt
-coverage "merged_list.txt" "prodigal_list.txt" "prodigal"
-##coverage "merged_list.txt" "glimmer_list.txt" "glimmer"
-coverage "merged_list.txt" "hmm_list.txt" "gmhmm"
+ls intersect*.gff > intersect_list.txt
+coverage "intersect_list.txt" "prodigal_list.txt" "prodigal"
+##coverage "intersect_list.txt" "glimmer_list.txt" "glimmer"
+coverage "intersect_list.txt" "hmm_list.txt" "gmhmm"
 
 average (){
 	while read line 
