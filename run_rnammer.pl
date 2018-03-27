@@ -6,7 +6,7 @@ my $output_dir = $ARGV[1];
 #my $count=$ARGV[2];#number of files in the directory that you want to run
 opendir(DIR,$input_dir) or die "couldn't open directory $input_dir\n";
 
-my @file_list= grep (/.fa$ && .fasta$/, readdir DIR);
+my @file_list= grep (/\.fa$|\.fasta$/, readdir DIR);
 my @output_list = @file_list;
 for (@output_list){
 	s/.fa//;
