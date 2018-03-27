@@ -1,5 +1,8 @@
 #!/bin/bash
 export PATH=/projects/data/team1_GenePrediction/bin/Prodigal/:/projects/data/team1_GenePrediction/bin/Prodigal/rnammer1.2:$PATH
+export PATH=/projects/data/team1_GenePrediction/bin/Prodigal/:/projects/data/team1_GenePrediction/bin/rnammer1.2:/projects/data/team1_GenePrediction/bin/infernal-1.1.2/src/:$PATH
+export PERL5LIB=/projects/data/team1_GenePrediction/bin/rnammer1.2/XML-Simple-2.24/lib:$PERL5LIB
+export PERL5LIB=/projects/data/team1_GenePrediction/bin/rnammer1.2/hmmer-2.3.2/Perl4-CoreLibs-0.004/lib:$PERL5LIB
 
 #this is the usage message that displays when no input is passed or when -h is passed
 usage="Gene Prediction Pipeline. Command line options:	
@@ -38,6 +41,8 @@ else
 fi
 
 DIR=$(pwd); #this captures the main working directory as the variable DIR
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cp /projects/data/team1_GenePrediction/gm_key ~/
 
 #run Prodigal
 prodigal -i $iopt -f gff -o "$oopt/prodigal_output.gff"
@@ -62,7 +67,7 @@ bash run_infernal.sh $iopt $oopt
 
 #run RNAmmer
 echo $iopt > file_list_RNAmmer
-perl run_rnammer.pl -i file_list_RNAmmer -d `dirname $iopt`
+perl $SCRIPT_DIR/run_rnammer_new.pl -i file_list_RNAmmer -d `dirname $iopt`
 rm file_list_RNAmmer
 mv *fsa* $oopt
 
