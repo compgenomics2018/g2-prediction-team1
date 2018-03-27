@@ -36,6 +36,7 @@ else
 fi
 
 DIR=$(pwd); #this captures the main working directory as the variable DIR
+cp .gm_key ~/
 
 #we will assume that a person running this script will be in their home directory on the server and have the assembly file(s) in that same directory
 
