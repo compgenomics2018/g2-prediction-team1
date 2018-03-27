@@ -58,13 +58,13 @@ cd /projects/data/team1_GenePrediction/bin/aragorn1.2.38/ #we change into the di
 cd ..
 
 #run Infernal
-#bash run_infernal.sh $iopt $oopt 
+bash run_infernal.sh $iopt $oopt 
 
 #run RNAmmer
-#echo $iopt > file_list_RNAmmer
-#perl run_rnammer.pl -i file_list_RNAmmer -d `dirname $iopt`
-#rm file_list_RNAmmer
-#mv *fsa* $oopt
+echo $iopt > file_list_RNAmmer
+perl run_rnammer.pl -i file_list_RNAmmer -d `dirname $iopt`
+rm file_list_RNAmmer
+mv *fsa* $oopt
 
 #validate outputs
 #to do this, just run validation.sh and have the prodigal output and genemark output in the same directory as well
@@ -79,8 +79,12 @@ rm genemarkS_output.gff
 cd $DIR
  
 #we need to add the gff to fasta file (but we need to keep both the .gff and the .fa files)
-#perl "/projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/GFF2fasta.pl" -i union.gff -a $iopt -o protein_coding_result.fasta
+cp $iopt "/projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/"
+cd $oopt
+cp protein_coding_result.gff "/projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/"
+cd "/projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/"
+perl GFF2fasta.pl -i protein_coding_result.gff -a $iopt -o protein_coding_result.fasta 
 #here we need to delete the extra files (prodigal files, genemark files, and any temporary files that we don't need)
-#the only output should be the merged file from the validation script (protein_coding_result.fasta) and the ncRNA output files (gff and fasta form)
+#the only output should be the merged file from the validation script (protein_coding_result.fasta, protein_coding_result.gff) and the ncRNA output files (gff and fasta form)
 
 exit;
