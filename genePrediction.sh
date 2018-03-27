@@ -7,6 +7,8 @@ usage="Gene Prediction Pipeline. Command line options:
 -o Output directory 
 -h usage information "
 
+#we will assume that a person running this script will be in their home directory on the server and have the assembly file(s) in that same directory
+
 if [ $# == 0 ] ; then	#if nothing is input, then usage message is printed and the script exits
     echo $usage
     exit;
@@ -36,9 +38,6 @@ else
 fi
 
 DIR=$(pwd); #this captures the main working directory as the variable DIR
-cp .gm_key ~/
-
-#we will assume that a person running this script will be in their home directory on the server and have the assembly file(s) in that same directory
 
 #run Prodigal
 prodigal -i $iopt -f gff -o "$oopt/prodigal_output.gff" -d "$oopt/prodigal_nucleotide.fa" -a "$oopt/prodigal_protein.fa" 
@@ -46,35 +45,36 @@ prodigal -i $iopt -f gff -o "$oopt/prodigal_output.gff" -d "$oopt/prodigal_nucle
 #run GeneMarkS
 cd /projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/
 perl gmsn.pl --prok --output "$DIR/$oopt/genemarkS_output.gff" --format GFF "$DIR/$iopt"
-cd ..
+cd ..   #moving us back to current directory
 
 #run GeneMarkHMM
-#perl "/projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/gmhmmp.pl" --output genemark_output.GFF --format GFF $iopt  #not working yet
-export PATH=$PATH:/projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/
-gmhmmp -o "$oopt/genemarkHMM_output.gff" -f G -m /projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/GeneMark_hmm.mod $iopt # working
+#export PATH=$PATH:/projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/
+#gmhmmp -o "$oopt/genemarkHMM_output.gff" -f G -m /projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/GeneMark_hmm.mod $iopt 
 
 #run Aragorn
-#for running aragorn, the aragorn script itself must be in the same directory as this script
 cd /projects/data/team1_GenePrediction/bin/aragorn1.2.38/ #we change into the directory containing aragorn
 ./aragorn -t "$DIR/$iopt" -o "$DIR/$oopt/aragorn_output"
 cd ..
 
 #run Infernal
-bash $DIR/run_internal.sh $iopt $oopt 
+bash run_infernal.sh $iopt $oopt 
 
 #run RNAmmer
 echo $iopt > file_list_RNAmmer
-perl $DIR/run_rnammer.pl -i file_list_RNAmmer -d `dirname $iopt`
+perl run_rnammer.pl -i file_list_RNAmmer -d `dirname $iopt`
 rm file_list_RNAmmer
 mv *fsa* $oopt
 
 #validate outputs
     #to do this, just run validation.sh and have the prodigal output and genemark output in the same directory as well
-cd $oopt
-bash "/projects/data/team1_GenePrediction/ab_initio_output/validation.sh"
+#cd $oopt
+#bash "/projects/data/team1_GenePrediction/ab_initio_output/validation.sh"
 
 #we need to add the gff to fasta file (but we need to keep both the .gff and the .fa files)
+#perl "/projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/GFF2fasta.pl" -i [input gff file] -a [input assembly] -o [output fasta name]
 #here we need to delete the extra files (prodigal files, genemark files, and any temporary files that we don't need)
+#rm sequence #not sure what this is
+#rm itr_0.mod #not sure what this is
 #the only output should be the merged file from the validation script and the ncRNA output files
 
 exit;
