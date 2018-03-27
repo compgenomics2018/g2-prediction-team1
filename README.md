@@ -20,3 +20,10 @@ Compare to run_rnammer_new.pl, this script is more convenient to use when you do
 ## run_rnammer_new.pl usage
 Command:
 ./run_rnammer_new.pl -i <test_file_list> -d <input_directory>
+
+## wrapper.sh usage
+before using:
+Assuming all the support files are in the same directory with wrapper.sh
+
+command:
+./genePrediction.sh -i <input_file> -o <output_file> -h <help>
