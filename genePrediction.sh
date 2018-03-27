@@ -71,7 +71,7 @@ mv prodigal_output.gff /projects/data/team1_GenePrediction/validation/
 mv genemarkS_output.gff /projects/data/team1_GenePrediction/validation/
 cd /projects/data/team1_GenePrediction/validation/
 bash validation_wrapper.sh
-bash union_wrapper.sh
+bash union_wrapper.sh > $oopt
 rm prodigal_output.gff
 rm genemarkS_output.gff
 cd ..
