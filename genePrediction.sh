@@ -3,7 +3,8 @@ export PATH=/projects/data/team1_GenePrediction/bin/Prodigal/:$PATH # Prodigal P
 export PATH=/projects/data/team1_GenePrediction/bin/infernal-1.1.2/src/:$PATH # Infernal PATH                                                                                        
 export PATH=/projects/data/team1_GenePrediction/bin/Prodigal/rnammer1.2:$PATH # RNAmer PATH                                                                                          
 export PERL5LIB=/projects/data/team1_GenePrediction/bin/rnammer1.2/XML-Simple-2.24/lib:$PERL5LIB  # RNAmer PATH                                                                      
-export PERL5LIB=/projects/data/team1_GenePrediction/bin/rnammer1.2/hmmer-2.3.2/Perl4-CoreLibs-0.004/lib:$PERL5LIB  # RNAmer PATH                                                     
+export PERL5LIB=/projects/data/team1_GenePrediction/bin/rnammer1.2/hmmer-2.3.2/Perl4-CoreLibs-0.004/lib:$PERL5LIB  # RNAmer PATH   
+export PATH=/projects/data/team1_GenePrediction/bin/bedtools2-master/bin:$PATH # Bedtools PATH
 
 
 #this is the usage message that displays when no input is passed or when -h is passed
@@ -76,6 +77,7 @@ mv prodigal_output.gff "/projects/data/team1_GenePrediction/validation/"
 mv genemarkS_output.gff "/projects/data/team1_GenePrediction/validation/"
 mv **.gff "/projects/data/team1_GenePrediction/validation/"
 mv **.fasta "/projects/data/team1_GenePrediction/validation/"
+mv **.tblout "/projects/data/team1_GenePrediction/validation/"
 cd "/projects/data/team1_GenePrediction/validation/"
 bash validation_wrapper.sh
 bash union_wrapper.sh > "$DIR/$oopt/protein_coding_result.gff"
