@@ -1,5 +1,10 @@
 #!/bin/bash
-export PATH=/projects/data/team1_GenePrediction/bin/Prodigal/:/projects/data/team1_GenePrediction/bin/Prodigal/rnammer1.2:$PATH
+export PATH=/projects/data/team1_GenePrediction/bin/Prodigal/:$PATH # Prodigal PATH                                                                                                  
+export PATH=/projects/data/team1_GenePrediction/bin/infernal-1.1.2/src/:$PATH # Infernal PATH                                                                                        
+export PATH=/projects/data/team1_GenePrediction/bin/Prodigal/rnammer1.2:$PATH # RNAmer PATH                                                                                          
+export PERL5LIB=/projects/data/team1_GenePrediction/bin/rnammer1.2/XML-Simple-2.24/lib:$PERL5LIB  # RNAmer PATH                                                                      
+export PERL5LIB=/projects/data/team1_GenePrediction/bin/rnammer1.2/hmmer-2.3.2/Perl4-CoreLibs-0.004/lib:$PERL5LIB  # RNAmer PATH                                                     
+
 
 #this is the usage message that displays when no input is passed or when -h is passed
 usage="Gene Prediction Pipeline. Command line options:	
@@ -58,16 +63,19 @@ cmscan --tblout "$oopt/`basename $iopt`.RF01400.cm.tblout" --fmt 2 "/projects/da
 `rm trash.cmscan`
 
 #run RNAmmer
-echo $iopt > file_list_RNAmmer
-perl $SCRIPT_DIR/run_rnammer.pl -i file_list_RNAmmer -d `dirname $iopt`
-rm file_list_RNAmmer
-mv *fsa* $oopt
+#echo $iopt > file_list_RNAmmer
+#perl $SCRIPT_DIR/run_rnammer.pl -i file_list_RNAmmer -d `dirname $iopt`
+#rm file_list_RNAmmer
+#mv *fsa* $oopt
+perl $SCRIPT_DIR/run_rnammer.pl $DIR $oopt 1
 
 #validate outputs
 #to do this, just run validation.sh and have the prodigal output and genemark output in the same directory as well
 cd $oopt
 mv prodigal_output.gff "/projects/data/team1_GenePrediction/validation/"
 mv genemarkS_output.gff "/projects/data/team1_GenePrediction/validation/"
+mv **.gff "/projects/data/team1_GenePrediction/validation/"
+mv **.fasta "/projects/data/team1_GenePrediction/validation/"
 cd "/projects/data/team1_GenePrediction/validation/"
 bash validation_wrapper.sh
 bash union_wrapper.sh > "$DIR/$oopt/protein_coding_result.gff"
