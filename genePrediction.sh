@@ -64,10 +64,6 @@ cmscan --tblout "$oopt/`basename $iopt`.RF01400.cm.tblout" --fmt 2 "/projects/da
 `rm trash.cmscan`
 
 #run RNAmmer
-#echo $iopt > file_list_RNAmmer
-#perl $SCRIPT_DIR/run_rnammer.pl -i file_list_RNAmmer -d `dirname $iopt`
-#rm file_list_RNAmmer
-#mv *fsa* $oopt
 perl $SCRIPT_DIR/run_rnammer.pl $DIR $oopt 1
 
 #validate outputs
@@ -85,12 +81,4 @@ rm prodigal_output.gff
 rm genemarkS_output.gff
 cd $DIR
 
-#we need to add the gff to fasta file (but we need to keep both the .gff and the .fa files)
-#cp $iopt "/projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/"
-#cd $oopt
-#cp protein_coding_result.gff "/projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/"
-#cd "/projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/"
-#perl GFF2fasta.pl -i protein_coding_result.gff -a $iopt -o protein_coding_result.fasta 
-#here we need to delete the extra files (prodigal files, genemark files, and any temporary files that we don't need)
-#the only output should be the merged file from the validation script (protein_coding_result.fasta, protein_coding_result.gff) and the ncRNA output files (gff and fasta form)
 exit;
