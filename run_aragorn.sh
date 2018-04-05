@@ -17,7 +17,7 @@ usage="Command line options:
 -i [path to directory where fasta files are located]
 -o [path to directory where the ouput will be ]"
 
-while getopts "a:b:h" opt;  
+while getopts "a:b" opt;  
 do
     case $opt in
     i) iopt=$OPTARG;;   #first fasta file
