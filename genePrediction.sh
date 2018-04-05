@@ -16,7 +16,7 @@ do
     case $opt in
     i) iopt=$OPTARG;;   
     o) oopt=$OPTARG;;
-    c) cm_path=$OPTARG
+    c) cm_path=$OPTARG;;
 	h) echo $usage; exit;
 esac
 done
