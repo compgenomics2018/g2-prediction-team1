@@ -9,7 +9,7 @@ if not sys.argv[1]:
 
 pat = ".*(SRR[0-9]{7}).*"
 ID = re.search(pat, sys.argv[1])
-outfile = "gff3_final/" + str(ID.group(1)) + ".gff3"
+outfile = "aragorn_output/gff3_final/" + str(ID.group(1)) + ".gff3"
 scafname = ""
 scafpat = "scaffold"
 coordpat = "Sequence"
