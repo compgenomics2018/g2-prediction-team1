@@ -9,8 +9,6 @@ this script should run under the path where the asseblied genomes are.
 *list.txt is a intermediate file which you can rename it whatever you want. It will contain a list of all the names of asseblied genomes under this path.*
 
 
-
-
 ## run_rnammer.pl usage
 Command:
 ./run_rnammer.pl <input_directory> <output_directory> <number of input files you want to run>
@@ -20,6 +18,13 @@ Compare to run_rnammer_new.pl, this script is more convenient to use when you do
 ## run_rnammer_new.pl usage
 Command:
 ./run_rnammer_new.pl -i <test_file_list> -d <input_directory>
+
+## run_aragorn.sh usage
+Command:
+./run_aragorn.sh
+
+## run_prodigal usage
+
 
 ## wrapper.sh usage
 Add these to .bashrc before running the script:
