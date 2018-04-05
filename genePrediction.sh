@@ -57,7 +57,7 @@ cmscan --tblout "$oopt/`basename $iopt`.tblout" --fmt 2 $cm_path $iopt > trash.c
 `rm trash.cmscan`
 
 #run RNAmmer
-perl run_rnammer.pl $iopt $oopt 1
+perl run_rnammer.pl $DIR $oopt 1
 
 #validate outputs
 bash validation_wrapper.sh
