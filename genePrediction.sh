@@ -44,7 +44,7 @@ prodigal -i $iopt -f gff -o "prodigal_output.gff"
 perl gmsn.pl --prok --output "genemarkS_output.gff" --format GFF "$DIR/$iopt"
 
 #run Aragorn
-aragorn -t "$DIR/$iopt" -o "$DIR/$oopt/aragorn_output"
+aragorn -t -fasta "$DIR/$iopt" -o "$DIR/$oopt/aragorn_output"
 
 #convert aragorn output to GFF3
 files=$(ls $DIR/$oopt/aragorn_output)
