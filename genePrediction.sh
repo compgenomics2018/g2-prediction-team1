@@ -1,4 +1,6 @@
 #!/bin/bash
+# User must add Prodigal, Infernal/src, genemark, bedtools2, and their Dir containing covariance models to their PATH
+# rnammer and aragorn paths must be added as aliases (rnammer and aragorn respectively)
 export PATH=/projects/data/team1_GenePrediction/bin/Prodigal/:$PATH # Prodigal PATH                                                                                                  
 export PATH=/projects/data/team1_GenePrediction/bin/infernal-1.1.2/src/:$PATH # Infernal PATH                                                                                        
 export PATH=/projects/data/team1_GenePrediction/bin/Prodigal/rnammer1.2:$PATH # RNAmer PATH                                                                                          
@@ -11,6 +13,7 @@ export PATH=/projects/data/team1_GenePrediction/bin/bedtools2-master/bin:$PATH #
 usage="Gene Prediction Pipeline. Command line options:	
 -i Input assembly file
 -o Output directory 
+-c Covariance Model path
 -h usage information "
 
 #we will assume that a person running this script will be in their home directory on the server and have the assembly file(s) in that same directory
@@ -25,6 +28,7 @@ do
     case $opt in
     i) iopt=$OPTARG;;   #stores input after i as aopt
     o) oopt=$OPTARG;;
+    c) cm_path=$OPTARG;;  #path to covariance models  
 	h) echo $usage; exit;
 esac
 done
@@ -59,8 +63,10 @@ cd /projects/data/team1_GenePrediction/bin/aragorn1.2.38/ #we change into the di
 ./aragorn -t "$DIR/$iopt" -o "$DIR/$oopt/aragorn_output"
 cd $DIR
 
+# Convert Aragorn Proprietary 
+
 #run Infernal
-cmscan --tblout "$oopt/`basename $iopt`.RF01400.cm.tblout" --fmt 2 "/projects/data/team1_GenePrediction/bin/infernal-1.1.2/cm/RF01400.cm" $iopt > trash.cmscan
+cmscan --tblout "$oopt/`basename $iopt`.tblout" --fmt 2 $cm_path $iopt > trash.cmscan
 `rm trash.cmscan`
 
 #run RNAmmer
