@@ -43,6 +43,7 @@ prodigal -i $iopt -f gff -o "prodigal_output.gff"
 #run GeneMarkS
 perl gmsn.pl --prok --output "genemarkS_output.gff" --format GFF "$DIR/$iopt"
 
+`mkdir -p $DIR/$oopt/aragorn_output`
 #run Aragorn
 aragorn -t -fasta "$DIR/$iopt" -o "$DIR/$oopt/aragorn_output"
 
