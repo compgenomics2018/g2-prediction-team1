@@ -46,6 +46,12 @@ perl gmsn.pl --prok --output "genemarkS_output.gff" --format GFF "$DIR/$iopt"
 #run Aragorn
 aragorn -t "$DIR/$iopt" -o "$DIR/$oopt/aragorn_output"
 
+#convert aragorn output to GFF3
+files=$(ls $DIR/$oopt/aragorn_output)
+for f in $files; do
+	python crisis.py $f
+done
+
 #run Infernal
 cmscan --tblout "$oopt/`basename $iopt`.tblout" --fmt 2 $cm_path $iopt > trash.cmscan
 `rm trash.cmscan`
