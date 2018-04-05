@@ -16,6 +16,7 @@ do
     case $opt in
     i) iopt=$OPTARG;;   
     o) oopt=$OPTARG;;
+    c) cm_path=$OPTARG
 	h) echo $usage; exit;
 esac
 done
@@ -46,7 +47,7 @@ perl gmsn.pl --prok --output "genemarkS_output.gff" --format GFF "$DIR/$iopt"
 aragorn -t "$DIR/$iopt" -o "$DIR/$oopt/aragorn_output"
 
 #run Infernal
-cmscan --tblout "$oopt/`basename $iopt`.RF01400.cm.tblout" --fmt 2 "/projects/data/team1_GenePrediction/bin/infernal-1.1.2/cm/RF01400.cm" $iopt > trash.cmscan
+cmscan --tblout "$oopt/`basename $iopt`.tblout" --fmt 2 $cm_path $iopt > trash.cmscan
 `rm trash.cmscan`
 
 #run RNAmmer
