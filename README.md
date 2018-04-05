@@ -21,7 +21,7 @@ Command:
 
 ## run_aragorn.sh usage
 Command:
-./run_aragorn.sh
+./run_aragorn.sh -i <input directory> -o <output directory>
 
 ## run_prodigal usage
 
