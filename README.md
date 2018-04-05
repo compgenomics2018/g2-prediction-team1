@@ -28,7 +28,7 @@ Command:
 
 ## wrapper.sh usage
 Add to your PATH:
-Genemark
+GenemarkS
 Prodigal
 Infernal/src
 Infernal Covariance Model Dir
