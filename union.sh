@@ -14,7 +14,7 @@ complement () {  ##calculate the coverage of each tool in order to find the best
 	
 	for ((j=0;j<=$(($i-1));j+=1))
 	do
-	bedtools intersect -f 0.99 -r -wa -v -a ${array1[$j]} -b ${array2[$j]} > "complement_${array1[$j]}"
+	bedtools intersect -f 0.80 -r -wa -v -s -a ${array1[$j]} -b ${array2[$j]} > "complement_${array1[$j]}"
 	done
 
 	
@@ -47,8 +47,9 @@ union (){
 	
 	for ((j=0;j<=$(($i-1));j+=1))
 	do
-	cat ${array1[$j]} ${array2[$j]} ${array3[$j]} > "union_${array4[$j]}.gff"
+	cat ${array1[$j]} ${array2[$j]} ${array3[$j]} > "${array4[$j]}.gff"
 	done
 }
 union "prodigal_complement.txt" "hmm_complement.txt" "intersect_list.txt" "genome.txt"
 rm complement*
+rm intersect*
