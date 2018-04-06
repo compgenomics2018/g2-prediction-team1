@@ -32,6 +32,7 @@ this script should run under the path where the asseblied genomes are.
 
 ## run_GeneMarkS.pl usage
 `prompt> perl run_GeneMarkS.pl <input.fasta>`
+
 *<input.fasta> should be the nucleotide sequences in fasta format.*
 
 ## run_rnammer.pl usage
