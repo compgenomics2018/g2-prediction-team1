@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 complement () {  ##calculate the coverage of each tool in order to find the best tool
-	bedtools intersect -f 0.99 -r -wa -v -a $1 -b $2 > "$3_complement.gff"
+	bedtools intersect -f 0.80 -r -wa -s -v -a $1 -b $2 > "$3_complement.gff"
 }
 
 complement "prodigal_output.gff" "intersect.gff" "prodigal"
