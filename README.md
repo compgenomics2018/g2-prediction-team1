@@ -2,12 +2,13 @@
 
 ## wrapper script genePrediction.sh usage
 Add to your PATH:
-GenemarkS
 Prodigal
 Infernal/src
 Infernal/cm
 Aragorn/bin
 Rnammer/bin
+
+Using the full path to gsmn.pl, create an alias for gsmn.pl in order to run GenemarkS.
 
 Go here and select GeneMarkS and linux64, and download the gm_key_64: http://opal.biology.gatech.edu/GeneMark/license_download.cgi
 copy this "key" to your home directory: 
