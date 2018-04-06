@@ -29,5 +29,5 @@ chomp @SRRname;
 close FILENAME;
 #run GeneMarkhmm, you can replace the command line in ``
 foreach my $i (@SRRname){
-    `gmhmmp -o $i.HMM.gff -f G -m /projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/GeneMark_hmm.mod $i`
+    `gmhmmp -o $i.HMM.gff -f G -m -A $i.protein.fasta -D $i.nucleotide.fasta /projects/data/team1_GenePrediction/bin/genemark_suite_linux_64/gmsuite/GeneMark_hmm.mod $i`
 }
