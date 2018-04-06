@@ -58,7 +58,7 @@ for file in temp_afasta/*;
 	 	python crisis.py $file ; 
 	done
  
-mv temp_afasta/*.gff3 ~/;
+mv temp_afasta/*.gff3 $oopt;
 
 rm -r temp_afasta;
 
