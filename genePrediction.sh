@@ -43,15 +43,28 @@ prodigal -i $iopt -f gff -o "prodigal_output.gff"
 #run GeneMarkS
 perl gmsn.pl --prok --output "genemarkS_output.gff" --format GFF "$DIR/$iopt"
 
-`mkdir -p $DIR/$oopt/aragorn_output`
-#run Aragorn
-aragorn -t -fasta "$DIR/$iopt" -o "$DIR/$oopt/aragorn_output"
 
-#convert aragorn output to GFF3
-files=$(ls $DIR/$oopt/aragorn_output)
-for f in $files; do
-	python crisis.py $f
-done
+#####run Aragorn#####
+
+mkdir temp_afasta;
+
+for file in $iopt;
+	do
+	./aragorn -t -fasta $file > temp_afasta/$(basename "$file").out; # if aragorn is in PATH, change ./aragorn to aragorn
+	done
+
+for file in temp_afasta/*;
+	 do
+	 	python crisis.py $file ; 
+	done
+ 
+mv temp_afasta/*.gff3 ~/;
+
+rm -r temp_afasta;
+
+#######################
+
+
 
 #run Infernal
 cmscan --tblout "$oopt/`basename $iopt`.tblout" --fmt 2 $cm_path $iopt > trash.cmscan
