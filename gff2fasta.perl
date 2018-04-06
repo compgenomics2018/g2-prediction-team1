@@ -26,7 +26,7 @@ sub initialize{
 }
 
 sub doFunction{
-  `bedtools getfasta -fi $input_assembly -fo $output_fasta -s -bed $input_gff`
+  `bedtools getfasta -fi $input_assembly -fo $output_fasta -bed $input_gff`
 }
 initialize();
 doFunction();
