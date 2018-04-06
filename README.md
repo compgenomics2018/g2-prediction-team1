@@ -30,6 +30,9 @@ this script should run under the path where the asseblied genomes are.
 
 *list.txt is a intermediate file which you can rename it whatever you want. It will contain a list of all the names of asseblied genomes under this path.*
 
+## run_GeneMarkS.pl usage
+`prompt> perl run_GeneMarkS.pl <input.fasta>`
+*<input.fasta> should be the nucleotide sequences in fasta format.*
 
 ## run_rnammer.pl usage
 Command:
