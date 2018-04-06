@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 intersect () {
-	bedtools intersect -f 0.80 -r -s -a $1 -b $2 > "intersect.gff"  ##find intersection of the results between 2 tools with 99% coverage using bedtools  	
+	bedtools intersect -f 0.80 -r -s -wa -a $1 -b $2 > "intersect.gff"  ##find intersection of the results between 2 tools with 99% coverage using bedtools  	
 }
 
 intersect "prodigal_output.gff" "genemarkS_output.gff" 
