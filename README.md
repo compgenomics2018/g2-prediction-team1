@@ -49,4 +49,6 @@ Command:
 Command:
 ./run_aragorn.sh -i <input directory> -o <output directory>
 
-## run_prodigal usage
+## run_prodigal.sh usage
+Command:
+./run_prodigal.sh <input_fasta>
