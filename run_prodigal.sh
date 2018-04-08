@@ -1,13 +1,14 @@
-# Currently requires assemblies to be in a directory called "assemblies".  Place script next to the assemblies directory to run. 
+#!/bin/bash
 
-mkdir output nucleotide protein log 2> /dev/null;
+mkdir Prodigal_out 2> /dev/null;
 
-for file in assemblies/*; do
-    base=`echo $file | awk -F'[/.]' '{print $2}'`;
-    echo "Running Prodigal on $base";
-    Prodigal -i $file -f gff -o output/"$base"_Prodigal.gff -d nucleotide/"$base"_Prodigal.nucleotide.fa -a protein/"$base"_Prodigal.protein.fa 2> log/"$base"_Prodigal.txt;
-    echo "Finished $base on `date`";
-done
+File=$1;
 
-echo "done!";
+echo "Running Prodigal on $File" > Prodigal_out/"$File".prodigal.txt;
+Prodigal -i $File -f gff -o Prodigal_out/"$File".prodigal.gff -d Prodigal_out/"$File".prodigal.fna -a Prodigal_out/"$File".prodigal.faa;
+echo "Finished $File on `date`" >> Prodigal_out/"$File".prodigal.txt;
+
+python reformatFasta.py Prodigal_out/"$File".prodigal.fna;
+python reformatFasta.py Prodigal_out/"$File".prodigal.faa;
+
 exit
