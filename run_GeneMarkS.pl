@@ -14,6 +14,6 @@ $filename = $ARGV[0];
 #open file
 chomp $filename;
 #run GeneMarkhmm, you can replace the command line in ``
-`gmsn.pl --prok --output $filename.HMM.gff --format GFF --fnn --faa $filename`
+`gmsn.pl --prok --output genemark.gff --format GFF --fnn --faa $filename`;
 #remove intermediate files
 `rm *.mod gms.log`
