@@ -44,13 +44,13 @@ bash "./run_prodigal.sh" $iopt
 perl "./run_GeneMarkS.pl" $iopt
 
 #union protein coding genes and output gff
-bash "./union_wrapper.sh" > "$DIR/$oopt/$iopt_protein_coding_result.gff"
+bash "./union_wrapper.sh" > "$oopt/$iopt_protein_coding_result.gff"
 rm prodigal.gff
 rm genemark.gff
 
 #output union fna and faa format
-perl  "./gff_to_fasta.pl -i $iopt_protein_coding_result.gff -p prodigal.fna.reformatted -g genemark.gff.fnn -o $DIR/$oopt/$iopt_protein_coding_result.fna"
-perl  "./gff_to_fasta.pl -i $iopt_protein_coding_result.gff -p prodigal.faa.reformatted -g genemark.gff.faa -o $DIR/$oopt/$iopt_protein_coding_result.faa"
+perl  "./gff_to_fasta.pl -i $iopt_protein_coding_result.gff -p prodigal.fna.reformatted -g genemark.gff.fnn -o $oopt/$iopt_protein_coding_result.fna"
+perl  "./gff_to_fasta.pl -i $iopt_protein_coding_result.gff -p prodigal.faa.reformatted -g genemark.gff.faa -o $oopt/$iopt_protein_coding_result.faa"
 rm prodigal.fna
 rm prodigal.faa
 rm genemark.gff.fnn
@@ -58,6 +58,6 @@ rm genemark.gff.fna
 
 #run ncRNA prediction and get merged gff output
 bash "./get_ncRNA.sh" $iopt
-mv "$iopt.ncRNA.gff" "$DIR/$oopt"
+mv "$iopt.ncRNA.gff" $oopt
 
 exit;
