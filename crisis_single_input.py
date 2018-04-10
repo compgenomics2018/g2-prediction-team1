@@ -7,9 +7,9 @@ infile = sys.argv[1]
 if not sys.argv[1]:
 	print("usage: crisis.py <infile>")
 
-pat = ".*(SRR[0-9]{7}).*"
-ID = re.search(pat, sys.argv[1])
-outfile =  "ncRNA_output/" + str(ID.group(1)) + ".aragorn.gff"
+# pat = ".*(SRR[0-9]{7}).*"
+# ID = re.search(pat, sys.argv[1])
+outfile =  "ncRNA_output/aragorn.gff"
 scafname = ""
 scafpat = "scaffold"
 coordpat = "Sequence"

@@ -10,11 +10,11 @@
 mkdir -p ncRNA_output
 test ! $1 && printf "\nplease specify input fasta file\nExample: $0 sample_assembly.fasta\n\n" && exit 1;
 
-printf "\n[rnammer]running rnammer on $1...\n"
+printf "\n[rnammer]running rnammer... \n"
 
-/projects/data/team1_GenePrediction/bin/rnammer1.2/rnammer -S bac -m lsu,ssu,tsu -gff ncRNA_output/$1.rnammer.gff $1
-printf "[rnammer]finished running rnammer on $1\n"
+rnammer -S bac -m lsu,ssu,tsu -gff ncRNA_output/output.rnammer.gff $1
+printf "[rnammer]finished running rnammer \n"
 
 # remove extra format information for merging
-sed -i '$ d' ncRNA_output/$1.rnammer.gff $1
-sed -i -e '1,6d' ncRNA_output/$1.rnammer.gff $1
+sed -i '$ d' ncRNA_output/output.rnammer.gff $1
+sed -i -e '1,6d' ncRNA_output/output.rnammer.gff $1

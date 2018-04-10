@@ -4,6 +4,7 @@
 usage="Gene Prediction Pipeline. Command line options:	
 -i Full path to input assembly file 
 -o Full path to output directory 
+-m Full path to Infernal model
 -h usage information "
 
 if [ $# == 0 ] ; then	#if nothing is input, then usage message is printed and the script exits
@@ -11,12 +12,12 @@ if [ $# == 0 ] ; then	#if nothing is input, then usage message is printed and th
     exit;
 fi
 
-while getopts "i:o:h" opt; 
+while getopts "i:o:m:h" opt; 
 do
     case $opt in
     i) iopt=$OPTARG;;   
     o) oopt=$OPTARG;;
-    c) cm_path=$OPTARG;;
+    m) mopt=$OPTARG;;
 	h) echo $usage; exit;
 esac
 done
@@ -61,7 +62,9 @@ rm genemark.gff.faa
 mv union.gff "$oopt/protein_coding_result.gff"
 
 #run ncRNA prediction and get merged gff output
-bash "./get_ncRNA.sh" $iopt
-mv "$iopt.ncRNA.gff" $oopt
+bash "./get_ncRNA.sh" $iopt $mopt
+mv ncRNA.gff $oopt
+
+rm -r ncRNA_output
 
 exit;

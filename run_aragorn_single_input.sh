@@ -11,15 +11,15 @@ mkdir -p ncRNA_output
 
 test ! $1 && printf "\nplease specify input fasta file\nExample: $0 sample_assembly.fasta\n\n" && exit 1;
 
-printf "\n\n[aragorn]running aragorn on $1...\n"
+printf "\n\n[aragorn]running aragorn...\n"
 
-/projects/data/team1_GenePrediction/bin/aragorn1.2.38/aragorn -t -fasta -O ncRNA_output/$1.aragorn.report $1
+aragorn -t -fasta -O ncRNA_output/aragorn.report $1
 
-printf "\n[aragorn]finished running aragorn on $1\n"
+printf "\n[aragorn]finished running aragorn \n"
 printf "\n[aragorn]converting output report to gff...\n\n"
 
-python crisis_single_input.py ncRNA_output/$1.aragorn.report
+python crisis_single_input.py ncRNA_output/aragorn.report
 
-rm ncRNA_output/$1.aragorn.report
+rm ncRNA_output/aragorn.report
 
 
