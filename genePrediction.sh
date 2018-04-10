@@ -49,13 +49,9 @@ rm prodigal.gff
 rm genemark.gff
 
 #output union fna and faa format
-<<<<<<< HEAD
-perl  "./gff_to_fasta.pl -i $iopt_protein_coding_result.gff -p prodigal.fna.reformatted -g genemark.gff.fnn -o protein_coding_result.fna"
-perl  "./gff_to_fasta.pl -i $iopt_protein_coding_result.gff -p prodigal.faa.reformatted -g genemark.gff.faa -o protein_coding_result.faa"
-=======
 perl  "./gff_to_fasta.pl -i $iopt_protein_coding_result.gff -p prodigal.fna.reformatted -g genemark.gff.fnn -o $oopt/$iopt_protein_coding_result.fna"
 perl  "./gff_to_fasta.pl -i $iopt_protein_coding_result.gff -p prodigal.faa.reformatted -g genemark.gff.faa -o $oopt/$iopt_protein_coding_result.faa"
->>>>>>> 54634b4387476a84e05e2279c43dab7afd511993
+
 rm prodigal.fna
 rm prodigal.faa
 rm prodigal.fna.reformatted
@@ -65,10 +61,6 @@ rm genemark.gff.fna
 
 #run ncRNA prediction and get merged gff output
 bash "./get_ncRNA.sh" $iopt
-<<<<<<< HEAD
-mv "$iopt.ncRNA.gff" "$oopt"
-=======
 mv "$iopt.ncRNA.gff" $oopt
->>>>>>> 54634b4387476a84e05e2279c43dab7afd511993
 
 exit;
