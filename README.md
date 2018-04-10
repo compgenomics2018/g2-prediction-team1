@@ -7,8 +7,7 @@ Infernal/src
 Infernal/cm
 Aragorn/bin
 Rnammer/bin
-
-Using the full path to gsmn.pl, create an alias for gsmn.pl in order to run GenemarkS.
+Full path to gsmm.pl (in order to run GeneMarkS)
 
 Go here and select GeneMarkS and linux64, and download the gm_key_64: http://opal.biology.gatech.edu/GeneMark/license_download.cgi
 copy this "key" to your home directory: 
