@@ -49,8 +49,8 @@ rm prodigal.gff
 rm genemark.gff
 
 #output union fna and faa format
-perl  "./gff_to_fasta.pl -i $iopt_protein_coding_result.gff -p prodigal.fna -g genemark.gff.fnn -o $DIR/$oopt/$iopt_protein_coding_result.fna"
-perl  "./gff_to_fasta.pl -i $iopt_protein_coding_result.gff -p prodigal.faa -g genemark.gff.faa -o $DIR/$oopt/$iopt_protein_coding_result.faa"
+perl  "./gff_to_fasta.pl -i $iopt_protein_coding_result.gff -p prodigal.fna.reformatted -g genemark.gff.fnn -o $DIR/$oopt/$iopt_protein_coding_result.fna"
+perl  "./gff_to_fasta.pl -i $iopt_protein_coding_result.gff -p prodigal.faa.reformatted -g genemark.gff.faa -o $DIR/$oopt/$iopt_protein_coding_result.faa"
 rm prodigal.fna
 rm prodigal.faa
 rm genemark.gff.fnn
