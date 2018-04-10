@@ -38,45 +38,26 @@ fi
 DIR=$(pwd); 
 
 #run Prodigal
-prodigal -i $iopt -f gff -o "prodigal_output.gff"
+bash "./run_prodigal.sh" $iopt 
 
 #run GeneMarkS
-perl gmsn.pl --prok --output "genemarkS_output.gff" --format GFF "$DIR/$iopt"
+perl "./run_GeneMarkS.pl" $iopt
 
+#union protein coding genes and output gff
+bash "./union_wrapper.sh" > "$DIR/$oopt/$iopt_protein_coding_result.gff"
+rm prodigal.gff
+rm genemark.gff
 
-#####run Aragorn#####
+#output union fna and faa format
+perl  "./gff_to_fasta.pl -i $iopt_protein_coding_result.gff -p prodigal.fna -g genemark.gff.fnn -o $DIR/$oopt/$iopt_protein_coding_result.fna"
+perl  "./gff_to_fasta.pl -i $iopt_protein_coding_result.gff -p prodigal.faa -g genemark.gff.faa -o $DIR/$oopt/$iopt_protein_coding_result.faa"
+rm prodigal.fna
+rm prodigal.faa
+rm genemark.gff.fnn
+rm genemark.gff.fna
 
-mkdir temp_afasta;
-
-for file in $iopt;
-	do
-	./aragorn -t -fasta $file > temp_afasta/$(basename "$file").out; # if aragorn is in PATH, change ./aragorn to aragorn
-	done
-
-for file in temp_afasta/*;
-	 do
-	 	python crisis.py $file ; 
-	done
- 
-mv temp_afasta/*.gff3 $oopt;
-
-rm -r temp_afasta;
-
-#######################
-
-
-
-#run Infernal
-cmscan --tblout "$oopt/`basename $iopt`.tblout" --fmt 2 $cm_path $iopt > trash.cmscan
-`rm trash.cmscan`
-
-#run RNAmmer
-perl run_rnammer.pl $DIR $oopt 1
-
-#validate outputs
-bash validation_wrapper.sh
-bash union_wrapper.sh > "$DIR/$oopt/protein_coding_result.gff"
-rm prodigal_output.gff
-rm genemarkS_output.gff
+#run ncRNA prediction and get merged gff output
+bash "./get_ncRNA.sh" $iopt
+mv "$iopt.ncRNA.gff" "$DIR/$oopt"
 
 exit;
